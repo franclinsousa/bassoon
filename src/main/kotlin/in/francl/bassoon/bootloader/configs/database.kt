@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.Database
 val config by lazy {
     HikariConfig()
         .apply {
-            jdbcUrl = "jdbc:sqlite:file:bassoon?cache=shared"
+            jdbcUrl = "jdbc:sqlite:file:build/bassoon?cache=shared"
             driverClassName = "org.sqlite.JDBC"
             transactionIsolation = "TRANSACTION_SERIALIZABLE"
             validate()
