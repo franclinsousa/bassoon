@@ -31,10 +31,9 @@ class LinkController(
                 val isValidUrl = urlShorten?.matches(Regex(regexpValidURL)) ?: false
                 val shortener = urlShorten?.let {
                     val urlOrigin = call.request.local.let { o ->
-                        when (o.port) {
-                            80 -> "http://${o.host}"
-                            443 -> "https://${o.host}"
-                            else -> "http://${o.host}:${o.port}"
+                        when {
+                            o.host.contains("localhost") -> "http://${o.host}:${o.port}"
+                            else -> "${o.scheme}://${o.host}"
                         }
                     }
                     if (isValidUrl) service.create(it, urlOrigin) else null
