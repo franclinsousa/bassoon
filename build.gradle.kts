@@ -12,7 +12,6 @@ version = "0.0.1"
 
 application {
     mainClass.set("in.francl.bassoon.bootloader.ApplicationKt")
-
 }
 
 repositories {
@@ -80,4 +79,8 @@ tasks.test {
 
 tasks {
     get("run").dependsOn("update")
+}
+
+task("stage") {
+    dependsOn("clean", "installDist")
 }
