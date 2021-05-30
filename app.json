@@ -1,0 +1,6 @@
+{
+  "name": "bassoon",
+  "description": "Bassoon",
+  "image": "heroku/java",
+  "addons": []
+}

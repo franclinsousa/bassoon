@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - includeAll:
+      relativeToChangelogFile: false
+      errorIfMissingOrEmpty: true
+      path: src/main/resources/db/migrations
+
