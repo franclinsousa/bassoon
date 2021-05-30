@@ -60,7 +60,6 @@ plugins {
     application
     kotlin("jvm") version "1.5.10"
     id("org.liquibase.gradle") version "2.0.4"
-
 }
 
 liquibase {

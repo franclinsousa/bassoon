@@ -30,7 +30,7 @@ class LinkController(
                 val urlShorten = call.receive<Map<String, String>>()["url"]
                 val isValidUrl = urlShorten?.matches(Regex(regexpValidURL)) ?: false
                 val shortener = urlShorten?.let {
-                    val urlOrigin = call.request.origin.let { o ->
+                    val urlOrigin = call.request.local.let { o ->
                         when (o.port) {
                             80 -> "http://${o.host}"
                             443 -> "https://${o.host}"
