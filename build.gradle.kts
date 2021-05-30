@@ -82,5 +82,5 @@ tasks {
 }
 
 task("stage") {
-    dependsOn("clean", "installDist")
+    dependsOn(arrayOf("clean", "update", "installDist"))
 }
