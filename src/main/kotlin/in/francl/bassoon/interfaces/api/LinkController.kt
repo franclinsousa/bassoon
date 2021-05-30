@@ -25,27 +25,26 @@ class LinkController(
     }
 
 
-    private fun Route.short() =
-            post {
-                val urlShorten = call.receive<Map<String, String>>()["url"]
-                val isValidUrl = urlShorten?.matches(Regex(regexpValidURL)) ?: false
-                val shortener = urlShorten?.let {
-                    val urlOrigin = call.request.local.let { o ->
-                        when {
-                            o.host.contains("localhost") -> "http://${o.host}:${o.port}"
-                            else -> "${o.scheme}://${o.host}"
-                        }
-                    }
-                    if (isValidUrl) service.create(it, urlOrigin) else null
-                }
+    private fun Route.short() = post {
+        val urlShorten = call.receive<Map<String, String>>()["url"]
+        val isValidUrl = urlShorten?.matches(Regex(regexpValidURL)) ?: false
+        val shortener = urlShorten?.let {
+            val urlOrigin = call.request.origin.let { o ->
                 when {
-                    !isValidUrl -> call.respond(HttpStatusCode.BadRequest, ("error" to "URL ($urlShorten) inválida."))
-                    shortener == null -> call.respond(
-                        HttpStatusCode.InternalServerError,
-                        ("error" to "Houve um problema no servidor.")
-                    )
-                    else -> call.respond(HttpStatusCode.Created, shortener)
+                    o.host.contains("localhost") -> "http://${o.host}:${o.port}"
+                    else -> "${o.scheme}://${o.host}"
                 }
             }
+            if (isValidUrl) service.create(it, urlOrigin) else null
+        }
+        when {
+            !isValidUrl -> call.respond(HttpStatusCode.BadRequest, ("error" to "URL ($urlShorten) inválida."))
+            shortener == null -> call.respond(
+                HttpStatusCode.InternalServerError,
+                ("error" to "Houve um problema no servidor.")
+            )
+            else -> call.respond(HttpStatusCode.Created, shortener)
+        }
+    }
 
 }
