@@ -25,12 +25,12 @@ internal class LinkControllerTests {
         withTestApplication({
             installFeatures()
             routing {
-                route("/api/v1") {
+                route("/api/v1/shorten") {
                     LinkController(service, this)
                 }
             }
         }) {
-            handleRequest(HttpMethod.Post, "/api/v1/short") {
+            handleRequest(HttpMethod.Post, "/api/v1/shorten") {
                 addHeader("Content-Type", "application/json")
                 setBody(Gson().toJson(mapOf("url" to shortener.target)))
                 addHeader("Accept", "application/json")
@@ -47,12 +47,12 @@ internal class LinkControllerTests {
         withTestApplication({
             installFeatures()
             routing {
-                route("/api/v1") {
+                route("/api/v1/shorten") {
                     LinkController(service, this)
                 }
             }
         }) {
-            handleRequest(HttpMethod.Post, "/api/v1/short") {
+            handleRequest(HttpMethod.Post, "/api/v1/shorten") {
                 addHeader("Content-Type", "application/json")
                 setBody(Gson().toJson(mapOf("url" to shortener.target)))
                 addHeader("Accept", "application/json")
