@@ -24,7 +24,7 @@ class Controller(
 
     private suspend fun PipelineContext<Unit, ApplicationCall>.redirect() {
         val shorten = call.parameters["shorten"]
-        val target = shorten?.let { service.getTargetUrl(it, call.request.local.remoteHost) }
+        val target = shorten?.let { service.getTargetUrl(it, call.request.header("X-Forwarded-For") ?: call.request.origin.remoteHost) }
         when (target) {
             null -> call.respond(HttpStatusCode.BadRequest, mapOf("error" to "URL inválida."))
             else -> call.respondRedirect(target, true)
