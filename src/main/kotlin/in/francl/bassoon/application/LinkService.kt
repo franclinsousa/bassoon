@@ -4,12 +4,9 @@ import `in`.francl.bassoon.domain.datatranfer.ShortLink
 import `in`.francl.bassoon.domain.model.LinkModel
 import `in`.francl.bassoon.domain.service.LinkDomainService
 import `in`.francl.bassoon.infrastructure.rdb.LinkRepository
-import arrow.core.Either
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
-import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.*
+import kotlinx.coroutines.time.withTimeoutOrNull
+import java.time.Duration
 
 
 class LinkService(
@@ -25,12 +22,12 @@ class LinkService(
         }
     }
 
-    suspend fun getTargetUrl(shorten: String, remoteHost: String): String? {
+    fun getTargetUrl(shorten: String, remoteHost: String): String? {
         val id = serviceDomain.decode(shorten)
-        return repository.findById(id)?.apply {
-            coroutineScope {
-                withContext(Dispatchers.IO){
-                    statService.create(this@apply, remoteHost)
+        return repository.findById(id)?.apply link@ {
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    statService.create(this@link, remoteHost)
                 }
             }
         }?.target

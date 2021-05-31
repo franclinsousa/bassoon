@@ -19,7 +19,7 @@ class LinkController(
 
 
     init {
-        route.route("/shorten") {
+        route.route("") {
             short()
         }
     }

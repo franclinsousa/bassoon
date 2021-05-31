@@ -65,9 +65,9 @@ plugins {
 liquibase {
     activities.register("main") {
         arguments = mapOf(
-            "logLevel" to "debug",
+            "logLevel" to "info",
             "changeLogFile" to "src/main/resources/db.changelog.yaml",
-            "url" to "jdbc:sqlite:file:build/bassoon?cache=shared"
+            "url" to "jdbc:sqlite:file:bassoon?cache=shared"
         )
     }
 }

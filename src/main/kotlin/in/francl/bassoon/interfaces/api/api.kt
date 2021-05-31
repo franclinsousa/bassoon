@@ -12,12 +12,14 @@ import io.ktor.routing.*
 fun Application.initAPI() {
 
     routing {
-        val service = LinkService(LinkRepository(), LinkDomainService(), StatService(StatRepository(), IpApi()))
-        route("/api/v1") {
-            LinkController(service, this)
+        val statService = StatService(StatRepository(), LinkDomainService(), IpApi())
+        val linkService = LinkService(LinkRepository(), LinkDomainService(), statService)
+        route("/api/v1/shorten") {
+            LinkController(linkService, this)
+            StatController(statService, this)
         }
         route("/") {
-            Controller(service, this)
+            Controller(linkService, this)
         }
     }
 

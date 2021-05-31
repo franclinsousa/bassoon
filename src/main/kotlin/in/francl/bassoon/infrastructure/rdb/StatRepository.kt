@@ -32,4 +32,12 @@ class StatRepository {
         }
     }
 
+    fun findByLinkId(linkId: Long): Collection<StatEntity> {
+        return transaction {
+            StatEntity.find {
+                StatEntity.Table.link eq linkId
+            }.toList()
+        }
+    }
+
 }
